@@ -1,0 +1,196 @@
+/* Global Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* React Flow Custom Styles */
+.react-flow__node-deliverable {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background: white;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.react-flow__node-deliverable:hover {
+  border-color: #1976d2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__node-deliverable.selected {
+  border-color: #1976d2;
+  border-width: 3px;
+  box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
+}
+
+.react-flow__node-deliverable.highlighted {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+}
+
+.react-flow__edge-dependency {
+  stroke: #b0b0b0;
+  stroke-width: 2;
+}
+
+.react-flow__edge-dependency.highlighted {
+  stroke: #ff9800;
+  stroke-width: 3;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Tooltip Styles */
+.knowledge-tooltip {
+  max-width: 300px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Phase-specific Colors */
+.phase-feed {
+  background-color: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.phase-dd {
+  background-color: #f3e5f5;
+  border-color: #9c27b0;
+}
+
+.phase-proc {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.phase-const {
+  background-color: #fff3e0;
+  border-color: #ff9800;
+}
+
+/* Discipline-specific Accent Colors */
+.discipline-process {
+  border-left: 4px solid #1976d2;
+}
+
+.discipline-hse {
+  border-left: 4px solid #e65100;
+}
+
+.discipline-equipment {
+  border-left: 4px solid #388e3c;
+}
+
+.discipline-piping {
+  border-left: 4px solid #388e3c;
+}
+
+.discipline-material {
+  border-left: 4px solid #ff9800;
+}
+
+.discipline-structural {
+  border-left: 4px solid #7b1fa2;
+}
+
+.discipline-civil {
+  border-left: 4px solid #7b1fa2;
+}
+
+.discipline-naval {
+  border-left: 4px solid #00695c;
+}
+
+.discipline-weight {
+  border-left: 4px solid #33691e;
+}
+
+.discipline-instrumentation {
+  border-left: 4px solid #d32f2f;
+}
+
+.discipline-electrical {
+  border-left: 4px solid #f57c00;
+}
+
+.discipline-telecom {
+  border-left: 4px solid #5d4037;
+}
+
+.discipline-architecture {
+  border-left: 4px solid #1565c0;
+}
+
+.discipline-hvac {
+  border-left: 4px solid #1565c0;
+}
+
+.discipline-support {
+  border-left: 4px solid #bf360c;
+}
+
+.discipline-integration {
+  border-left: 4px solid #3e2723;
+}

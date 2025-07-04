@@ -1,0 +1,1 @@
+export { DeliverableDetail } from './DeliverableDetail';
