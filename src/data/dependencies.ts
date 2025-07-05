@@ -601,6 +601,106 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
+  // Material/Insulation Dependencies
+  {
+    source: 'PID',
+    target: 'IDS',
+    relationship: 'requires',
+    description: 'P&IDs identify all insulation requirements',
+    criticalInfo: [
+      'Line temperatures',
+      'Equipment services',
+      'Personnel protection needs',
+      'Process requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'IDS',
+    target: 'IMS',
+    relationship: 'feeds-into',
+    description: 'Datasheets lead to material specifications',
+    criticalInfo: [
+      'Material selections',
+      'Thickness requirements',
+      'Installation methods',
+      'Testing requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'HAZID',
+    target: 'FPR',
+    relationship: 'feeds-into',
+    description: 'Fire scenarios from HAZID determine fireproofing',
+    criticalInfo: [
+      'Fire risk areas',
+      'Protection requirements',
+      'Rating durations',
+      'Critical equipment'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'FPR',
+    target: 'SDD',
+    relationship: 'validates',
+    description: 'Fireproofing affects structural detailing',
+    criticalInfo: [
+      'Coating thicknesses',
+      'Application methods',
+      'Connection access',
+      'Inspection requirements'
+    ],
+    timing: 'parallel'
+  },
+  
+  // HVAC Dependencies
+  {
+    source: 'BLC',
+    target: 'HDS',
+    relationship: 'feeds-into',
+    description: 'Building layouts determine HVAC requirements',
+    criticalInfo: [
+      'Room volumes',
+      'Occupancy loads',
+      'Equipment heat loads',
+      'Ventilation paths'
+    ],
+    timing: 'parallel'
+  },
+  
+  {
+    source: 'HDS',
+    target: 'HVL',
+    relationship: 'feeds-into',
+    description: 'HVAC design specs guide equipment layout',
+    criticalInfo: [
+      'Equipment sizes',
+      'Ductwork routing',
+      'Access requirements',
+      'Structural loads'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'HVL',
+    target: 'ELC',
+    relationship: 'feeds-into',
+    description: 'HVAC equipment adds to electrical loads',
+    criticalInfo: [
+      'Motor horsepower',
+      'Control power needs',
+      'VFD requirements',
+      'Emergency power needs'
+    ],
+    timing: 'parallel'
+  },
+  
   // Cross-discipline Dependencies
   {
     source: 'PLD',
@@ -715,6 +815,35 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
+  // Document Control Dependencies
+  {
+    source: 'MR',
+    target: 'VDR',
+    relationship: 'feeds-into',
+    description: 'Material requisitions define vendor document requirements',
+    criticalInfo: [
+      'Required documents list',
+      'Submission schedule',
+      'Review requirements',
+      'Final documentation'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'VDR',
+    target: 'VDS',
+    relationship: 'validates',
+    description: 'VDR tracks vendor document submissions',
+    criticalInfo: [
+      'Submission status',
+      'Review comments',
+      'Approval status',
+      'Distribution records'
+    ],
+    timing: 'parallel'
+  },
+  
   // Operations and Commissioning
   {
     source: 'CE',
@@ -772,6 +901,63 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
+  // Construction Integration
+  {
+    source: 'GAD',
+    target: 'HUC',
+    relationship: 'feeds-into',
+    description: 'General arrangements guide hook-up planning',
+    criticalInfo: [
+      'Equipment locations',
+      'Access routes',
+      'Interconnections',
+      'Work areas'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'COMM',
+    target: 'PTR',
+    relationship: 'feeds-into',
+    description: 'Commissioning procedures lead to performance testing',
+    criticalInfo: [
+      'System readiness',
+      'Test conditions',
+      'Operating procedures',
+      'Acceptance criteria'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'PTR',
+    target: 'AAR',
+    relationship: 'feeds-into',
+    description: 'Performance test results finalize as-built records',
+    criticalInfo: [
+      'Final operating parameters',
+      'Actual performance data',
+      'Modifications made',
+      'Optimization changes'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'AAR',
+    target: 'PER',
+    relationship: 'feeds-into',
+    description: 'As-built records support project execution report',
+    criticalInfo: [
+      'Final configuration',
+      'Changes from design',
+      'Actual quantities',
+      'Performance metrics'
+    ],
+    timing: 'sequential'
+  },
+  
   // Additional critical paths
   {
     source: 'HMB',
@@ -817,14 +1003,14 @@ export const dependencies: Dependency[] = [
   
   {
     source: 'MTO',
-    target: 'MR',
-    relationship: 'feeds-into',
-    description: 'Material take-off supports procurement',
+    target: 'SPO',
+    relationship: 'validates',
+    description: 'MTO quantities verify spool drawings complete',
     criticalInfo: [
-      'Quantities required',
-      'Delivery schedule',
-      'Bulk materials',
-      'Special items'
+      'Total quantities',
+      'Spool counts',
+      'Field vs shop split',
+      'Material tracking'
     ],
     timing: 'parallel'
   },
@@ -841,5 +1027,76 @@ export const dependencies: Dependency[] = [
       'Anchor bolt patterns'
     ],
     timing: 'sequential'
+  },
+  
+  // Integration dependencies
+  {
+    source: 'WRG',
+    target: 'LOT',
+    relationship: 'requires',
+    description: 'Final weights essential for load-out planning',
+    criticalInfo: [
+      'Actual weights',
+      'COG verification',
+      'Ballast calculations',
+      'Stability verification'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'TPR',
+    target: 'HUC',
+    relationship: 'feeds-into',
+    description: 'Tow procedures transition to hook-up phase',
+    criticalInfo: [
+      'Arrival condition',
+      'Mooring installation',
+      'Initial connections',
+      'Weather windows'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'IMS',
+    target: 'COMM',
+    relationship: 'feeds-into',
+    description: 'Insulation completion required for commissioning',
+    criticalInfo: [
+      'System completion',
+      'Test readiness',
+      'Heat tracing operational',
+      'Personnel protection'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'FEP',
+    target: 'COMM',
+    relationship: 'validates',
+    description: 'Fire escape routes verified during commissioning',
+    criticalInfo: [
+      'Route accessibility',
+      'Emergency lighting',
+      'Signage installation',
+      'Drill procedures'
+    ],
+    timing: 'parallel'
+  },
+  
+  {
+    source: 'CTV',
+    target: 'COMM',
+    relationship: 'feeds-into',
+    description: 'CCTV system operational for commissioning',
+    criticalInfo: [
+      'Camera coverage',
+      'Recording capability',
+      'Control room displays',
+      'Integration testing'
+    ],
+    timing: 'parallel'
   }
 ];
