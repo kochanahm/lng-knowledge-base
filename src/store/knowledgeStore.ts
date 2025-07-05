@@ -75,25 +75,35 @@ export const useKnowledgeStore = create<KnowledgeState>()(
         diagramCenter: { x: 0, y: 0 },
         highlightedDeliverables: [],
         highlightedDependencies: [],
-        viewedDeliverables: new Set(),
-        completedTutorials: new Set(),
+        viewedDeliverables: new Set<string>(),
+        completedTutorials: new Set<string>(),
         
         // Actions
-        selectDeliverable: (id) => set((state) => ({
-          selectedDeliverable: id,
-          selectedDependency: null, // Clear dependency selection
-          isPanelOpen: id !== null, // Open panel when selecting
-        })),
+        selectDeliverable: (id) => set((state) => {
+          if (id) {
+            // Mark as viewed when selected
+            const newViewed = new Set(state.viewedDeliverables);
+            newViewed.add(id);
+            return {
+              selectedDeliverable: id,
+              selectedDependency: null,
+              isPanelOpen: true,
+              viewedDeliverables: newViewed,
+            };
+          }
+          return {
+            selectedDeliverable: id,
+            selectedDependency: null,
+          };
+        }),
         
         selectDependency: (dependency) => set({
           selectedDependency: dependency,
-          isPanelOpen: dependency !== null,
+          isPanelOpen: true,
         }),
         
         setLearningMode: (mode) => set({
           learningMode: mode,
-          highlightedDeliverables: [], // Clear highlights when changing mode
-          highlightedDependencies: [],
         }),
         
         updateFilters: (newFilters) => set((state) => ({
@@ -147,11 +157,44 @@ export const useKnowledgeStore = create<KnowledgeState>()(
       }),
       {
         name: 'lng-knowledge-store',
+        // Custom storage object to handle Set serialization
+        storage: {
+          getItem: (name) => {
+            const str = localStorage.getItem(name);
+            if (!str) return null;
+            
+            const { state } = JSON.parse(str);
+            return {
+              state: {
+                ...state,
+                // Convert arrays back to Sets
+                viewedDeliverables: new Set(state.viewedDeliverables || []),
+                completedTutorials: new Set(state.completedTutorials || []),
+              },
+            };
+          },
+          setItem: (name, value) => {
+            const { state } = value as { state: KnowledgeState };
+            const serializedState = {
+              state: {
+                ...state,
+                // Convert Sets to arrays for storage
+                viewedDeliverables: Array.from(state.viewedDeliverables || new Set()),
+                completedTutorials: Array.from(state.completedTutorials || new Set()),
+              },
+            };
+            localStorage.setItem(name, JSON.stringify(serializedState));
+          },
+          removeItem: (name) => {
+            localStorage.removeItem(name);
+          },
+        },
+        // Only persist certain parts of the state
         partialize: (state) => ({
-          // Only persist user progress and preferences
-          viewedDeliverables: Array.from(state.viewedDeliverables),
-          completedTutorials: Array.from(state.completedTutorials),
+          viewedDeliverables: state.viewedDeliverables,
+          completedTutorials: state.completedTutorials,
           learningMode: state.learningMode,
+          filters: state.filters,
         }),
       }
     )

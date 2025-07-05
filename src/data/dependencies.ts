@@ -160,20 +160,6 @@ export const dependencies: Dependency[] = [
   
   // Piping Dependencies
   {
-    source: 'EL',
-    target: 'PLD',
-    relationship: 'requires',
-    description: 'Equipment list needed to develop plot plan',
-    criticalInfo: [
-      'All equipment to be located',
-      'Equipment dimensions',
-      'Maintenance access needs',
-      'Equipment grouping'
-    ],
-    timing: 'sequential'
-  },
-  
-  {
     source: 'PLD',
     target: 'GAD',
     relationship: 'feeds-into',
@@ -189,95 +175,38 @@ export const dependencies: Dependency[] = [
   
   {
     source: 'PID',
-    target: 'ISO',
-    relationship: 'requires',
-    description: 'P&IDs define what piping to be detailed in isometrics',
+    target: 'PSI',
+    relationship: 'feeds-into',
+    description: 'P&IDs define all piping to be shown in isometrics',
     criticalInfo: [
       'Line numbers',
       'Piping configuration',
-      'Valve types and locations',
+      'Valve locations',
       'Instrument connections'
     ],
     timing: 'sequential'
   },
   
   {
-    source: 'GAD',
+    source: 'PSI',
     target: 'ISO',
-    relationship: 'requires',
-    description: 'General arrangements provide routing for isometrics',
+    relationship: 'feeds-into',
+    description: 'Piping specifications guide isometric development',
     criticalInfo: [
-      'Pipe routing in 3D',
-      'Equipment nozzle locations',
-      'Support locations',
-      'Elevation changes'
-    ],
-    timing: 'sequential'
-  },
-  
-  {
-    source: 'PSP',
-    target: 'ISO',
-    relationship: 'requires',
-    description: 'Piping specs define materials for isometrics',
-    criticalInfo: [
-      'Pipe materials and schedule',
-      'Fitting specifications',
-      'Valve types',
-      'Flange ratings'
+      'Material specifications',
+      'Fitting standards',
+      'Welding requirements',
+      'Testing requirements'
     ],
     timing: 'parallel'
   },
   
-  // Cross-discipline Process-Equipment
-  {
-    source: 'HMB',
-    target: 'EDS',
-    relationship: 'feeds-into',
-    description: 'Heat & Material Balance provides sizing data for equipment',
-    criticalInfo: [
-      'Flow rates',
-      'Heat duties',
-      'Physical properties',
-      'Operating cases'
-    ],
-    timing: 'sequential'
-  },
-  
-  {
-    source: 'VDS',
-    target: 'GAD',
-    relationship: 'feeds-into',
-    description: 'Vendor drawings provide actual equipment details for layout',
-    criticalInfo: [
-      'Actual equipment dimensions',
-      'Nozzle locations',
-      'Maintenance space',
-      'Foundation requirements'
-    ],
-    timing: 'sequential'
-  },
-  
   // Equipment to Procurement
-  {
-    source: 'MR',
-    target: 'TBE',
-    relationship: 'feeds-into',
-    description: 'Material requisitions used for technical bid evaluation',
-    criticalInfo: [
-      'Technical requirements',
-      'Evaluation criteria',
-      'Mandatory requirements',
-      'Preferred features'
-    ],
-    timing: 'sequential'
-  },
-  
   {
     source: 'TBE',
     target: 'VDS',
     relationship: 'feeds-into',
-    description: 'Selected vendor provides detailed drawings',
+    description: 'Technical bid evaluation leads to vendor selection',
     criticalInfo: [
       'Vendor selection',
       'Technical clarifications',
@@ -316,46 +245,31 @@ export const dependencies: Dependency[] = [
     timing: 'parallel'
   },
   
-  // HSE to Operations
-  {
-    source: 'CE',
-    target: 'COMM',
-    relationship: 'feeds-into',
-    description: 'Cause & Effect charts define commissioning logic',
-    criticalInfo: [
-      'Interlock logic',
-      'Shutdown sequences',
-      'Alarm settings',
-      'Override capabilities'
-    ],
-    timing: 'sequential'
-  },
-  
-  {
-    source: 'HAZOP',
-    target: 'OPM',
-    relationship: 'feeds-into',
-    description: 'HAZOP findings incorporated into operating procedures',
-    criticalInfo: [
-      'Critical operating limits',
-      'Safety precautions',
-      'Abnormal operations',
-      'Emergency procedures'
-    ],
-    timing: 'sequential'
-  },
-  
   // Structural Dependencies
   {
-    source: 'PLD',
+    source: 'SDB',
+    target: 'PSA',
+    relationship: 'feeds-into',
+    description: 'Design basis provides criteria for structural analysis',
+    criticalInfo: [
+      'Design loads',
+      'Load combinations',
+      'Material properties',
+      'Acceptance criteria'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'PSA',
     target: 'SFP',
     relationship: 'feeds-into',
-    description: 'Plot plan defines structural framing requirements',
+    description: 'Analysis results determine framing arrangement',
     criticalInfo: [
-      'Equipment locations and loads',
-      'Pipe rack routes',
-      'Platform requirements',
-      'Access structures'
+      'Member sizes',
+      'Framing system',
+      'Lateral system',
+      'Foundation loads'
     ],
     timing: 'sequential'
   },
@@ -366,10 +280,10 @@ export const dependencies: Dependency[] = [
     relationship: 'feeds-into',
     description: 'Framing plans detailed into structural drawings',
     criticalInfo: [
-      'Member sizes',
-      'Connection types',
-      'Load paths',
-      'Elevation strategy'
+      'Connection details',
+      'Exact dimensions',
+      'Fabrication requirements',
+      'Erection sequence'
     ],
     timing: 'sequential'
   },
@@ -403,6 +317,20 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
+  {
+    source: 'SDL',
+    target: 'FDC',
+    relationship: 'feeds-into',
+    description: 'Site development affects foundation design',
+    criticalInfo: [
+      'Finished grades',
+      'Drainage patterns',
+      'Underground utilities',
+      'Access roads'
+    ],
+    timing: 'parallel'
+  },
+  
   // Naval/Marine Dependencies
   {
     source: 'HMA',
@@ -420,14 +348,312 @@ export const dependencies: Dependency[] = [
   
   {
     source: 'STA',
-    target: 'BLP',
+    target: 'BCP',
     relationship: 'feeds-into',
-    description: 'Stability analysis determines ballasting requirements',
+    description: 'Stability requirements drive ballast system design',
     criticalInfo: [
       'Stability limits',
       'Weight distribution',
-      'Ballast tank sizing',
-      'Sequence requirements'
+      'Ballast volumes',
+      'COG requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'BCP',
+    target: 'BLP',
+    relationship: 'feeds-into',
+    description: 'Ballast concept refined into detailed procedures',
+    criticalInfo: [
+      'Tank arrangement',
+      'Pump capacities',
+      'Sequence logic',
+      'Time estimates'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'TAP',
+    target: 'TPR',
+    relationship: 'feeds-into',
+    description: 'Tow analysis provides basis for procedures',
+    criticalInfo: [
+      'Tug requirements',
+      'Weather limits',
+      'Route selection',
+      'Contingency plans'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'HMA',
+    target: 'MRP',
+    relationship: 'feeds-into',
+    description: 'Environmental loads determine mooring requirements',
+    criticalInfo: [
+      'Design loads',
+      'Motion limits',
+      'Fatigue loads',
+      'Safety factors'
+    ],
+    timing: 'sequential'
+  },
+  
+  // Instrumentation Dependencies
+  {
+    source: 'ICP',
+    target: 'CSA',
+    relationship: 'feeds-into',
+    description: 'I&C philosophy defines control system architecture',
+    criticalInfo: [
+      'Control philosophy',
+      'System hierarchy',
+      'Integration requirements',
+      'Redundancy strategy'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'CSA',
+    target: 'LPD',
+    relationship: 'feeds-into',
+    description: 'Control architecture defines loop requirements',
+    criticalInfo: [
+      'System architecture',
+      'I/O allocation',
+      'Controller assignments',
+      'Network topology'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'PID',
+    target: 'LPD',
+    relationship: 'requires',
+    description: 'P&IDs define all loops to be detailed',
+    criticalInfo: [
+      'Instrument tags',
+      'Loop functions',
+      'Signal types',
+      'Control narratives'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'HAZOP',
+    target: 'CE',
+    relationship: 'feeds-into',
+    description: 'HAZOP defines safety interlocks for C&E',
+    criticalInfo: [
+      'Safety functions',
+      'Interlock logic',
+      'Trip settings',
+      'Override requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  // Electrical Dependencies
+  {
+    source: 'EDB',
+    target: 'SLD',
+    relationship: 'feeds-into',
+    description: 'Design basis establishes electrical system parameters',
+    criticalInfo: [
+      'Voltage levels',
+      'System configuration',
+      'Redundancy requirements',
+      'Design standards'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'ELC',
+    target: 'SLD',
+    relationship: 'feeds-into',
+    description: 'Load list determines power distribution requirements',
+    criticalInfo: [
+      'Total loads',
+      'Load distribution',
+      'Critical loads',
+      'Future loads'
+    ],
+    timing: 'parallel'
+  },
+  
+  {
+    source: 'SLD',
+    target: 'SLD_DD',
+    relationship: 'feeds-into',
+    description: 'Preliminary SLD expanded to detailed design',
+    criticalInfo: [
+      'Final equipment selection',
+      'Protection coordination',
+      'Cable routing',
+      'Control schemes'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'PFD',
+    target: 'HAC',
+    relationship: 'feeds-into',
+    description: 'Process info determines hazardous area classification',
+    criticalInfo: [
+      'Material properties',
+      'Operating conditions',
+      'Release sources',
+      'Ventilation conditions'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'HAC',
+    target: 'EDB',
+    relationship: 'validates',
+    description: 'Area classification affects electrical design',
+    criticalInfo: [
+      'Equipment selection',
+      'Installation methods',
+      'Cable types',
+      'Enclosure ratings'
+    ],
+    timing: 'sequential'
+  },
+  
+  // Telecom/Architecture Dependencies
+  {
+    source: 'TCP',
+    target: 'NSA',
+    relationship: 'feeds-into',
+    description: 'Telecom philosophy drives network architecture',
+    criticalInfo: [
+      'System requirements',
+      'Technology choices',
+      'Integration needs',
+      'Security requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'NSA',
+    target: 'CTV',
+    relationship: 'feeds-into',
+    description: 'Network architecture supports CCTV system',
+    criticalInfo: [
+      'Network capacity',
+      'VLAN structure',
+      'Storage architecture',
+      'Bandwidth allocation'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'ADB',
+    target: 'BLC',
+    relationship: 'feeds-into',
+    description: 'Architectural basis guides building layouts',
+    criticalInfo: [
+      'Space standards',
+      'Design criteria',
+      'Material standards',
+      'Code requirements'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'BLC',
+    target: 'RML',
+    relationship: 'feeds-into',
+    description: 'Building concepts detailed into room layouts',
+    criticalInfo: [
+      'Space allocations',
+      'Room functions',
+      'Adjacencies',
+      'Circulation paths'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'RML',
+    target: 'FEP',
+    relationship: 'feeds-into',
+    description: 'Room layouts determine escape routes',
+    criticalInfo: [
+      'Occupant loads',
+      'Exit locations',
+      'Travel distances',
+      'Assembly points'
+    ],
+    timing: 'sequential'
+  },
+  
+  // Cross-discipline Dependencies
+  {
+    source: 'PLD',
+    target: 'SFP',
+    relationship: 'feeds-into',
+    description: 'Plot plan defines structural framing requirements',
+    criticalInfo: [
+      'Equipment locations and loads',
+      'Pipe rack routes',
+      'Platform requirements',
+      'Access structures'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'EL',
+    target: 'ELC',
+    relationship: 'feeds-into',
+    description: 'Equipment list provides electrical loads',
+    criticalInfo: [
+      'Motor sizes',
+      'Power requirements',
+      'Control power needs',
+      'Special power requirements'
+    ],
+    timing: 'parallel'
+  },
+  
+  {
+    source: 'PID',
+    target: 'ICP',
+    relationship: 'feeds-into',
+    description: 'P&IDs define control requirements',
+    criticalInfo: [
+      'Control loops',
+      'Interlock requirements',
+      'Operating modes',
+      'Instrumentation density'
+    ],
+    timing: 'parallel'
+  },
+  
+  {
+    source: 'GBD',
+    target: 'BLP',
+    relationship: 'requires',
+    description: 'GBS design determines ballasting requirements',
+    criticalInfo: [
+      'Compartment arrangement',
+      'Structural capacity',
+      'Penetrations',
+      'Access provisions'
     ],
     timing: 'sequential'
   },
@@ -489,31 +715,17 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
-  // Additional dependencies for better visualization
+  // Operations and Commissioning
   {
-    source: 'ICP',
-    target: 'CSA',
+    source: 'CE',
+    target: 'COMM',
     relationship: 'feeds-into',
-    description: 'I&C philosophy defines control system architecture',
+    description: 'Cause & Effect charts define commissioning logic',
     criticalInfo: [
-      'Control philosophy',
-      'System hierarchy',
-      'Integration requirements',
-      'Redundancy strategy'
-    ],
-    timing: 'sequential'
-  },
-  
-  {
-    source: 'CSA',
-    target: 'LPD',
-    relationship: 'feeds-into',
-    description: 'Control architecture defines loop requirements',
-    criticalInfo: [
-      'System architecture',
-      'I/O allocation',
-      'Controller assignments',
-      'Network topology'
+      'Interlock logic',
+      'Shutdown sequences',
+      'Alarm settings',
+      'Override capabilities'
     ],
     timing: 'sequential'
   },
@@ -533,6 +745,20 @@ export const dependencies: Dependency[] = [
   },
   
   {
+    source: 'HAZOP',
+    target: 'OPM',
+    relationship: 'feeds-into',
+    description: 'HAZOP findings incorporated into operating procedures',
+    criticalInfo: [
+      'Critical operating limits',
+      'Safety precautions',
+      'Abnormal operations',
+      'Emergency procedures'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
     source: 'BLP',
     target: 'LOT',
     relationship: 'requires',
@@ -546,31 +772,74 @@ export const dependencies: Dependency[] = [
     timing: 'sequential'
   },
   
+  // Additional critical paths
   {
-    source: 'SDB',
-    target: 'SFP',
+    source: 'HMB',
+    target: 'PSV_Calc',
     relationship: 'feeds-into',
-    description: 'Design basis drives structural framing',
+    description: 'Heat & Material Balance provides relief scenarios',
     criticalInfo: [
-      'Design loads',
-      'Material specs',
-      'Design codes',
-      'Safety factors'
+      'Maximum flows',
+      'Thermodynamic properties',
+      'Relief temperatures',
+      'Phase conditions'
     ],
     timing: 'sequential'
   },
   
   {
-    source: 'FDC',
-    target: 'SDB',
-    relationship: 'feeds-into',
-    description: 'Foundation criteria affects structural design',
+    source: 'PSV_Calc',
+    target: 'PID',
+    relationship: 'validates',
+    description: 'PSV calculations may require P&ID updates',
     criticalInfo: [
-      'Foundation stiffness',
-      'Settlement limits',
-      'Dynamic response',
-      'Base fixity'
+      'PSV sizes',
+      'Inlet/outlet piping',
+      'Relief header routing',
+      'Installation details'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'GAD',
+    target: 'ISO',
+    relationship: 'feeds-into',
+    description: '3D model provides routing for isometrics',
+    criticalInfo: [
+      'Exact routing',
+      'Elevations',
+      'Support locations',
+      'Interference resolution'
+    ],
+    timing: 'sequential'
+  },
+  
+  {
+    source: 'MTO',
+    target: 'MR',
+    relationship: 'feeds-into',
+    description: 'Material take-off supports procurement',
+    criticalInfo: [
+      'Quantities required',
+      'Delivery schedule',
+      'Bulk materials',
+      'Special items'
     ],
     timing: 'parallel'
+  },
+  
+  {
+    source: 'VDS',
+    target: 'GAD',
+    relationship: 'validates',
+    description: 'Vendor data confirms 3D model accuracy',
+    criticalInfo: [
+      'Actual dimensions',
+      'Nozzle orientations',
+      'Maintenance space',
+      'Anchor bolt patterns'
+    ],
+    timing: 'sequential'
   }
 ];
