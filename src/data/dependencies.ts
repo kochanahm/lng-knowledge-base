@@ -1,6 +1,6 @@
 import { Dependency } from '@/types';
 
-export const dependencies: Dependency[] = [
+export const existingDependencies: Dependency[] = [
   // Process Dependencies
   {
     source: 'BFD',
@@ -1099,4 +1099,13 @@ export const dependencies: Dependency[] = [
     ],
     timing: 'parallel'
   }
+];
+
+// Import extended dependencies
+import { allExtendedDependencies } from './dependencies';
+
+// Export combined dependencies
+export const dependencies: Dependency[] = [
+  ...existingDependencies,
+  ...allExtendedDependencies
 ];

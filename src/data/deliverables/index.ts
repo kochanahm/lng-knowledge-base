@@ -12,6 +12,28 @@ import { hvacDeliverables, supportDeliverables } from './hvac-support';
 import { enhancedProcessDeliverables, enhancedEquipmentDeliverables, enhancedPipingDeliverables } from './enhanced-process-equipment-piping';
 import { constructionDeliverables } from './construction';
 
+// Import extended deliverables
+import { allExtendedDeliverables } from './extended';
+
+// After your existing deliverables arrays, add:
+// Remove duplicates based on ID
+const existingIds = new Set([
+  ...processDeliverables,
+  ...hseDeliverables,
+  ...equipmentDeliverables,
+  ...pipingDeliverables,
+  ...instrumentationDeliverables,
+  ...electricalDeliverables,
+  ...civilDeliverables,
+  ...navalDeliverables,
+  ...architectureDeliverables,
+  ...supportDeliverables
+].map(d => d.id));
+
+const newDeliverables = allExtendedDeliverables.filter(
+  d => !existingIds.has(d.id)
+);
+
 // Combine all deliverables
 export const allDeliverables: DeliverableKnowledge[] = [
   ...processDeliverables,
@@ -33,6 +55,7 @@ export const allDeliverables: DeliverableKnowledge[] = [
   ...enhancedEquipmentDeliverables,
   ...enhancedPipingDeliverables,
   ...constructionDeliverables,
+  ...newDeliverables  // Add this line
 ];
 
 // Create a map for quick lookup
