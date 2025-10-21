@@ -1,1 +1,0 @@
-export { DeliverableDetail } from './DeliverableDetail';
